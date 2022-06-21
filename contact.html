@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSB Contact Us</title>
+
+    <link rel="shortcut icon" href="res/logo/PSB_logo_w.png"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body>
+    <header>
+        <div class="preface">
+            <div class="cwrap">
+                <a href="index.html"><img src="res/logo/PSB_logo-mod-applied-2.png" alt="Prime Solutions Biomedical" class="unselectable"></a>
+                <p>All your Biomedical, Surgical, and Sterlization needs in one place.</p>
+            </div>
+        </div>
+        <nav>
+            <div class="cwrap">
+                <ul>
+                    <li id="home"><a href="index.html" class="a-btn"">Home</a></li>
+                    <li><a href="about.html" class="a-btn">About Us</a></li>
+                    <li><a href="services.html" class="a-btn">Services</a></li>
+                    <li><a href="gallery.php" class="a-btn">Gallery</a></li>
+                    <li><a href="contact.html" class="a-btn">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="cwrap">
+            <h2 class="section-title">Contact <br class="mobile">Information</h2>
+            <section class="contact-info">
+                <p>
+                    Our consultation line is open Monday-Friday<br>8:00am-5:00pm<br>
+                </p>
+                <ul class="contact-blips">
+                    <li class="pno">
+                        <img src="https://www.svgrepo.com/show/74722/phone.svg" alt="">+1 (817) 680-1227
+                    </li>
+                    <li class="ead">
+                        <img src="https://www.svgrepo.com/show/32285/email.svg" alt=""> <a target="_blank" href="mailto:jacob.rowan@psbiomedical.com">Jacob.Rowan@PSBiomedical.com</a>
+                    </li>
+                </ul>
+            </section>
+            <section class="contact-panel">
+                <form method="POST" id="contact-form" action="php/send-form.php">
+                    <ul>
+                        <li>
+                            <div class="contact-item">
+                                <label for="name"><span>*</span>Name:</label>
+                                <input name="name" type="text" placeholder="John Doe" id="name">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-item">
+                                <label for="org">Organization:</label>
+                                <input name="org" type="text" id="org">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-item">
+                                <label for="email"><span>*</span>E-Mail:</label>
+                                <input name="email" type="email" placeholder="example@email.com" id="email">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-item">
+                                <label><span>*</span>Contact Preference:</label>
+                                <label id="p-select">
+                                    <input name="cm" type="radio" value="phone" id="p"
+                                        checked>
+                                    Phone 
+                                    <input name="phone" type="tel" placeholder="123-555-6789 : ext 1234" id="phone">
+                                    <span>&nbsp;*</span>
+                                </label>
+                                <label id="e-select">
+                                    <input name="cm" type="radio" value="email" id="e">
+                                    Email
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-item">
+                                <label for="comment"><span>*</span>Comments:</label>
+                                <textarea name="comment" minlength="1" maxlength="500" rows="5" placeholder="How can we help you?" id="comment"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="a-btn" name="submit" type="button" value="Send" id="push-form">Send</button>
+                            <p class="submission-status" id="status"></p>
+                        </li>
+                    </ul>
+                </form>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-bump"></div>
+        <div class="cwrap">
+            <div class="footer-wrap">
+                <a href=""><img src="res/logo/PSB_logo_w.png" alt="Prime Solutions Biomedical"></a>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.php">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+                <div class="social-panel">
+                    <a target="_blank" href="https://www.facebook.com/primesolutionsb/"><img src="res/icons/facebook-512.png" alt=""></a>
+                    <a target="_blank" href="https://www.instagram.com/primesolutionsb/"><img src="res/icons/instagram-512.png" alt=""></a>
+                    <a target="_blank" href="mailto:jacob.rowan@psbiomedical.com"><img src="res/icons/email-7-512.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bump"></div>
+        <div class="footnote">
+            &copy; Prime Solutions Biomedical
+        </div>
+    </footer>
+    <script src="js/send-form.js"></script>
+</body>
+</html>
