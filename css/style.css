@@ -389,14 +389,15 @@ section.about-team {
     align-items: center;
 }
 section.about-team p {
+    padding-bottom: 1em;
     width: 90%;
 }
-p > img {
+section.about-team p > img {
     border-radius: 50%;
     float: left;
     max-height: 150px;
     margin-bottom: 1em;
-    padding-right: 0.5em;
+    padding-right: 0.25em;
 }
 
 section.service {
@@ -762,6 +763,7 @@ footer a img:focus {
     #home {
         display: none;
     }
+    
 
     /* Content Mods */
     .service-preview {
@@ -777,20 +779,16 @@ footer a img:focus {
     }.service-preview a span {
         margin-top: 0.5em;
     }
+
+    .about-team p > img {
+        margin-top: 0.5em;
+        margin-bottom: 0;
+    }
+
     input[type=checkbox]:not(:checked):hover + h1 { /* Disabling highlight for mobile, lasts after closing expandable */
         background-color: var(--clr-blu);
     }
 
-    .before-after-container {
-        display: inline-block;
-        border: 1% solid var(--clr-blu);
-        height: 200px;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        position: relative;
-        white-space: nowrap;
-        width: 200px;
-    }
     section.contact-info {
         flex-flow: column nowrap;
     }
