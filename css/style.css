@@ -392,9 +392,10 @@ section.about-team p {
     width: 90%;
 }
 p > img {
-    border-radius: 20%;
+    border-radius: 50%;
     float: left;
     max-height: 150px;
+    margin-bottom: 1em;
     padding-right: 0.5em;
 }
 
