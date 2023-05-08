@@ -12,8 +12,30 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
+        <style>
+            #nav-logo {
+                display: inline-block;
+            }
+            #nav-logo > svg {
+                height: 100px;
+                width: auto;
+            }
+        </style>
     </head>
     <body>
+        <header>
+            <nav>
+                <a id="nav-logo" href="{{ path ('home') }}">
+                    {{ include ('svg/psb.svg.twig') }}
+                </a>
+                <ul>
+                    <li><a href="{{ path ('about') }}">About Us</a></li>
+                    <li><a href="{{ path ('services') }}">Services</a></li>
+                    <li><a href="{{ path ('contact') }}">Contact Us</a></li>
+                </ul>
+            </nav>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>
