@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ESRRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ESR
 {
     #[ORM\Id]
@@ -96,6 +97,22 @@ class ESR
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
+    }
+
+        
+    /**
+     * When an ESR form is submitted the date can be
+     * left blank if the current time should be used.
+     * 
+     * @see App\Form\ESRForm
+     * 
+     * @return self
+     */
+    #[ORM\PrePersist]
+    public function ensureDateSet(): self
+    {
+        $this->date = $this->date ?? new \DateTime();
+        return $this;
     }
 
     public function setDate(\DateTimeInterface $date): self
