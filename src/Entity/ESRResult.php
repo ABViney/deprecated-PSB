@@ -13,22 +13,34 @@ class ESRResult
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $estimate_required = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $equipment_repair = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $pm_pi_ovp_esi = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $operation_calibration = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $electrical_safety_test = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        "default" => false
+    ])]
     private ?bool $visual_inspection = null;
 
     #[ORM\Column(nullable: true)]

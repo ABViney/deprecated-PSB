@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230513170752 extends AbstractMigration
+final class Version20230515145848 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -36,7 +36,7 @@ final class Version20230513170752 extends AbstractMigration
         $this->addSql('CREATE TABLE esrpart_used (id INT NOT NULL, esr_id INT NOT NULL, esr_part_id INT NOT NULL, quantity INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_BBBEB51BFBFD160 ON esrpart_used (esr_id)');
         $this->addSql('CREATE INDEX IDX_BBBEB51BD4A62BA6 ON esrpart_used (esr_part_id)');
-        $this->addSql('CREATE TABLE esrresult (id INT NOT NULL, estimate_required BOOLEAN NOT NULL, equipment_repair BOOLEAN NOT NULL, pm_pi_ovp_esi BOOLEAN NOT NULL, operation_calibration BOOLEAN NOT NULL, electrical_safety_test BOOLEAN NOT NULL, visual_inspection BOOLEAN NOT NULL, passed BOOLEAN DEFAULT NULL, test_equipment_serial_no VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE esrresult (id INT NOT NULL, estimate_required BOOLEAN DEFAULT false NOT NULL, equipment_repair BOOLEAN DEFAULT false NOT NULL, pm_pi_ovp_esi BOOLEAN DEFAULT false NOT NULL, operation_calibration BOOLEAN DEFAULT false NOT NULL, electrical_safety_test BOOLEAN DEFAULT false NOT NULL, visual_inspection BOOLEAN DEFAULT false NOT NULL, passed BOOLEAN DEFAULT NULL, test_equipment_serial_no VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE messenger_messages (id BIGSERIAL NOT NULL, body TEXT NOT NULL, headers TEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, available_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, delivered_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0 ON messenger_messages (queue_name)');
         $this->addSql('CREATE INDEX IDX_75EA56E0E3BD61CE ON messenger_messages (available_at)');
