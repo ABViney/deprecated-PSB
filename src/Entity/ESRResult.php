@@ -16,32 +16,32 @@ class ESRResult
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $estimate_required = null;
+    private ?bool $estimate_required = false;
 
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $equipment_repair = null;
+    private ?bool $equipment_repair = false;
 
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $pm_pi_ovp_esi = null;
+    private ?bool $pm_pi_ovp_esi = false;
 
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $operation_calibration = null;
+    private ?bool $operation_calibration = false;
 
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $electrical_safety_test = null;
+    private ?bool $electrical_safety_test = false;
 
     #[ORM\Column(options: [
         "default" => false
     ])]
-    private ?bool $visual_inspection = null;
+    private ?bool $visual_inspection = false;
 
     #[ORM\Column(nullable: true)]
     private ?bool $passed = null;
@@ -54,7 +54,7 @@ class ESRResult
         return $this->id;
     }
 
-    public function isEstimateRequired(): ?bool
+    public function isEstimateRequired(): bool
     {
         return $this->estimate_required;
     }
@@ -66,7 +66,7 @@ class ESRResult
         return $this;
     }
 
-    public function isEquipmentRepair(): ?bool
+    public function isEquipmentRepair(): bool
     {
         return $this->equipment_repair;
     }
@@ -78,7 +78,7 @@ class ESRResult
         return $this;
     }
 
-    public function isPmPiOvpEsi(): ?bool
+    public function isPmPiOvpEsi(): bool
     {
         return $this->pm_pi_ovp_esi;
     }
@@ -90,7 +90,7 @@ class ESRResult
         return $this;
     }
 
-    public function isOperationCalibration(): ?bool
+    public function isOperationCalibration(): bool
     {
         return $this->operation_calibration;
     }
@@ -102,7 +102,7 @@ class ESRResult
         return $this;
     }
 
-    public function isElectricalSafetyTest(): ?bool
+    public function isElectricalSafetyTest(): bool
     {
         return $this->electrical_safety_test;
     }
@@ -114,7 +114,7 @@ class ESRResult
         return $this;
     }
 
-    public function isVisualInspection(): ?bool
+    public function isVisualInspection(): bool
     {
         return $this->visual_inspection;
     }
