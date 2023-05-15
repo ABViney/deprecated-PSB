@@ -1,0 +1,165 @@
+/'
+    UML Diagrams for Prime Solutions Biomedical
+    Render using Plant UML
+    
+    @author Adrian Viney <advin@vindig.dev>
+'/
+
+@startuml PSB Use Cases
+
+' Document meta
+header Prime Solutions Biomedical Web Application
+right footer PSB Use Cases
+title Using the website
+
+' Style directive
+left to right direction
+
+' Definitions
+actor "Visitor" as :visitor:
+usecase "Browse site" as (browse_site)
+usecase "Contact" as (contact)
+usecase "View gallery" as (gallery)
+
+:visitor: -- (browse_site)
+:visitor: -- (contact)
+:visitor: -- (gallery)
+
+actor "Employee" as :employee:
+actor "Owner" as :owner:
+:owner: --|> :employee:
+
+usecase "Add/Remove employee" as (modify_employees)
+:owner: -- (modify_employees)
+
+usecase "Login" as (login)
+usecase "Modify site" as (modify_site)
+usecase "Modify offered services" as (modify_services)
+(modify_site) --> (modify_services)
+
+usecase "Manage equipment service reports" as (manage_esr)
+usecase "Render equipment service reports" as (render_esr)
+usecase "Create equipment service reports" as (create_esr)
+usecase "Create before/after images" as (create_gallery_item)
+
+manage_esr -- create_esr
+manage_esr -- render_esr
+
+:employee: -- (login)
+:employee: -- (modify_site)
+:employee: -- (manage_esr)
+:employee: -- (create_gallery_item)
+
+@enduml
+@startuml PSB Classes
+
+header Prime Solutions Biomedical Web Application
+right footer PSB Use Cases
+title Classes
+
+package PSB {
+    package Controller {
+        class SiteController {
+            Response index()
+            Response about()
+            Response gallery()
+            Response services()
+            Response contact()
+        }
+
+        package Admin {
+            class DashboardController
+
+            class CrudESRController
+            class ServicesEditor
+            class GalleryEditor
+            class ContactViewer
+        }
+    }
+
+    package Entity {
+
+        entity ESR {
+            *ESR_id : int <<PK>>
+
+            *serial_no : string
+            *model : string
+            *description : text
+            *date : datetime
+
+            esr_result : ESRResult
+
+            *problems : text
+            *action_taken : text
+
+            esr_parts : <<ESRPartUsed[ESR_id]>>
+            *esr_laborers : <<ESRLabor[ESR_id]>>
+
+            *signed_by : string
+        }
+
+        entity ESRResult {
+            ESRResult_id : int <<PK>>
+
+            *estimate_required : bool
+            *equipment_repair : bool
+            *pm_pi_ovp_esi : bool
+            *operation_calibration : bool
+            *electrical_safety_test : bool
+            *visual_inspection : bool
+
+            passed : bool
+            test_equipment_serial_no : string
+        }
+        ESR |o--|| ESRResult
+
+        entity ESRPartUsed {
+            *ESR_id : int <<FK>>
+            *ESRPart_id : int <<FK>>
+            *quantity : int
+        }
+        ESR |o--o{ ESRPartUsed
+
+        entity ESRPart {
+            *ESRPart_id : int <<FK>>
+            *part_no : string
+            description : text
+            *price  : int
+        }
+        ESRPartUsed }o--|| ESRPart
+
+        entity ESRLabor {
+            *ESR_id : int <<FK>>
+            *employee_id : int <<FK>>
+            *labor_hours
+        }
+        ESR ||--|{ ESRLabor
+
+        entity Employee {
+            *employee_id : int <<PK>>
+            *first_name : string
+            *last_name : string
+        }
+        ESRLabor }o--|| Employee
+
+        entity GalleryItem {
+            *GalleryItem_id : int
+            *resource_1 : string <<uri>>
+            resource_2 : string <<uri>>
+        }
+    }
+
+    package Repository {
+        class ESRRepository
+        class GalleryItemRepository
+    }
+
+    ESRRepository o-- ESR
+    GalleryItemRepository o-- GalleryItem
+}
+
+package Resources {
+
+}
+
+@enduml
