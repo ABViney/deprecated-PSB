@@ -42,15 +42,16 @@ class ESR
     private Collection $esr_parts_used;
 
     #[ORM\OneToMany(mappedBy: 'esr', targetEntity: ESRLabor::class)]
-    private Collection $esr_laborers;
+    private Collection $esr_labors;
 
-    #[ORM\Column(length: 255)]
-    private ?string $signed_by = null;
+    #[ORM\ManyToOne(inversedBy: 'signed_ESRs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Employee $signed_by = null;
 
     public function __construct()
     {
         $this->esr_parts_used = new ArrayCollection();
-        $this->esr_laborers = new ArrayCollection();
+        $this->esr_labors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,15 +192,15 @@ class ESR
     /**
      * @return Collection<int, ESRLabor>
      */
-    public function getEsrLaborers(): Collection
+    public function getEsrLabors(): Collection
     {
-        return $this->esr_laborers;
+        return $this->esr_labors;
     }
 
     public function addEsrLaborer(ESRLabor $esrLaborer): self
     {
-        if (!$this->esr_laborers->contains($esrLaborer)) {
-            $this->esr_laborers->add($esrLaborer);
+        if (!$this->esr_labors->contains($esrLaborer)) {
+            $this->esr_labors->add($esrLaborer);
             $esrLaborer->setEsr($this);
         }
 
@@ -208,7 +209,7 @@ class ESR
 
     public function removeEsrLaborer(ESRLabor $esrLaborer): self
     {
-        if ($this->esr_laborers->removeElement($esrLaborer)) {
+        if ($this->esr_labors->removeElement($esrLaborer)) {
             // set the owning side to null (unless already changed)
             if ($esrLaborer->getEsr() === $this) {
                 $esrLaborer->setEsr(null);
@@ -218,12 +219,12 @@ class ESR
         return $this;
     }
 
-    public function getSignedBy(): ?string
+    public function getSignedBy(): ?Employee
     {
         return $this->signed_by;
     }
 
-    public function setSignedBy(string $signed_by): self
+    public function setSignedBy(?Employee $signed_by): self
     {
         $this->signed_by = $signed_by;
 

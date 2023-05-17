@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230515145848 extends AbstractMigration
+final class Version20230517211127 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,8 +27,9 @@ final class Version20230515145848 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE esrpart_used_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE esrresult_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE employee (id INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE esr (id INT NOT NULL, esr_result_id INT DEFAULT NULL, serial_no VARCHAR(255) NOT NULL, model VARCHAR(255) NOT NULL, description TEXT NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, problems TEXT NOT NULL, action_taken TEXT NOT NULL, signed_by VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE esr (id INT NOT NULL, esr_result_id INT DEFAULT NULL, signed_by_id INT NOT NULL, serial_no VARCHAR(255) NOT NULL, model VARCHAR(255) NOT NULL, description TEXT NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, problems TEXT NOT NULL, action_taken TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B44EAFC4083E8D1 ON esr (esr_result_id)');
+        $this->addSql('CREATE INDEX IDX_B44EAFCD2EDD3FB ON esr (signed_by_id)');
         $this->addSql('CREATE TABLE esrlabor (id INT NOT NULL, esr_id INT NOT NULL, employee_id INT NOT NULL, labor_hours DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_AE2665D6FBFD160 ON esrlabor (esr_id)');
         $this->addSql('CREATE INDEX IDX_AE2665D68C03F15C ON esrlabor (employee_id)');
@@ -50,6 +51,7 @@ final class Version20230515145848 extends AbstractMigration
         $this->addSql('DROP TRIGGER IF EXISTS notify_trigger ON messenger_messages;');
         $this->addSql('CREATE TRIGGER notify_trigger AFTER INSERT OR UPDATE ON messenger_messages FOR EACH ROW EXECUTE PROCEDURE notify_messenger_messages();');
         $this->addSql('ALTER TABLE esr ADD CONSTRAINT FK_B44EAFC4083E8D1 FOREIGN KEY (esr_result_id) REFERENCES esrresult (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE esr ADD CONSTRAINT FK_B44EAFCD2EDD3FB FOREIGN KEY (signed_by_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE esrlabor ADD CONSTRAINT FK_AE2665D6FBFD160 FOREIGN KEY (esr_id) REFERENCES esr (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE esrlabor ADD CONSTRAINT FK_AE2665D68C03F15C FOREIGN KEY (employee_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE esrpart_used ADD CONSTRAINT FK_BBBEB51BFBFD160 FOREIGN KEY (esr_id) REFERENCES esr (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -59,7 +61,6 @@ final class Version20230515145848 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE employee_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE esr_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE esrlabor_id_seq CASCADE');
@@ -67,6 +68,7 @@ final class Version20230515145848 extends AbstractMigration
         $this->addSql('DROP SEQUENCE esrpart_used_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE esrresult_id_seq CASCADE');
         $this->addSql('ALTER TABLE esr DROP CONSTRAINT FK_B44EAFC4083E8D1');
+        $this->addSql('ALTER TABLE esr DROP CONSTRAINT FK_B44EAFCD2EDD3FB');
         $this->addSql('ALTER TABLE esrlabor DROP CONSTRAINT FK_AE2665D6FBFD160');
         $this->addSql('ALTER TABLE esrlabor DROP CONSTRAINT FK_AE2665D68C03F15C');
         $this->addSql('ALTER TABLE esrpart_used DROP CONSTRAINT FK_BBBEB51BFBFD160');

@@ -22,7 +22,8 @@ class AppFixtures extends Fixture
          * FULL OUTER JOIN esrpart_used ON esr.id=esrpart_used.esr_id
          * FULL OUTER JOIN esrpart ON esrpart_used.esr_part_id=esrpart.id
          * FULL OUTER JOIN esrlabor ON esr.id=esrlabor.esr_id
-         * FULL OUTER JOIN employee on esrlabor.employee_id=employee.id;
+         * FULL OUTER JOIN employee on esrlabor.employee_id=employee.id
+         * FULL OUTER JOIN employee on esr.signed_by=employee.id;
          */
 
         // Results don't need to be instantiated before the ESR since the
@@ -32,6 +33,23 @@ class AppFixtures extends Fixture
         ->setPassed(true);
         $manager->persist($esr_result_1);
 
+
+        $employee_1 = (new Employee())
+        ->setFirstName('Owner')
+        ->setLastName('Man');
+        $manager->persist($employee_1);
+
+        $employee_2 = (new Employee())
+        ->setFirstName('John')
+        ->setLastName('Madden');
+        $manager->persist($employee_2);
+
+        $employee_3 = (new Employee())
+        ->setFirstName('Steve')
+        ->setLastName('Jerbs');
+        $manager->persist($employee_3);
+
+
         $esr_1 = (new ESR())
         ->setSerialNo('12-12345-123')
         ->setModel('M8')
@@ -39,7 +57,7 @@ class AppFixtures extends Fixture
         ->setEsrResult($esr_result_1)
         ->setProblems('I have to insert entries to test')
         ->setActionTaken('I wrote a fixture to automate this.')
-        ->setSignedBy('Adrian Viney');
+        ->setSignedBy($employee_1);
         $manager->persist($esr_1);
 
 
@@ -69,17 +87,6 @@ class AppFixtures extends Fixture
         $manager->persist($esr_part_used_2);
 
 
-        $employee_1 = (new Employee())
-        ->setFirstName('John')
-        ->setLastName('Madden');
-        $manager->persist($employee_1);
-
-        $employee_2 = (new Employee())
-        ->setFirstName('Steve')
-        ->setLastName('Jerbs');
-        $manager->persist($employee_2);
-
-
         $esr_labor_1 = (new ESRLabor())
         ->setEsr($esr_1)
         ->setEmployee($employee_1)
@@ -92,6 +99,7 @@ class AppFixtures extends Fixture
         ->setLaborHours(11);
         $manager->persist($esr_labor_2);
         
+
         $manager->flush();
     }
 }

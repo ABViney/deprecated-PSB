@@ -24,9 +24,13 @@ class Employee
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: ESRLabor::class)]
     private Collection $esr_labors;
 
+    #[ORM\OneToMany(mappedBy: 'signed_by', targetEntity: ESR::class)]
+    private Collection $signed_ESRs;
+
     public function __construct()
     {
         $this->esr_labors = new ArrayCollection();
+        $this->signed_ESRs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +86,36 @@ class Employee
             // set the owning side to null (unless already changed)
             if ($esrLabor->getEmployee() === $this) {
                 $esrLabor->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ESR>
+     */
+    public function getSignedESRs(): Collection
+    {
+        return $this->signed_ESRs;
+    }
+
+    public function addSignedESR(ESR $signedESR): self
+    {
+        if (!$this->signed_ESRs->contains($signedESR)) {
+            $this->signed_ESRs->add($signedESR);
+            $signedESR->setSignedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignedESR(ESR $signedESR): self
+    {
+        if ($this->signed_ESRs->removeElement($signedESR)) {
+            // set the owning side to null (unless already changed)
+            if ($signedESR->getSignedBy() === $this) {
+                $signedESR->setSignedBy(null);
             }
         }
 
