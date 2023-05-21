@@ -27,10 +27,14 @@ class Employee
     #[ORM\OneToMany(mappedBy: 'signed_by', targetEntity: ESR::class)]
     private Collection $signed_ESRs;
 
+    #[ORM\OneToMany(mappedBy: 'assigned_to', targetEntity: Account::class)]
+    private Collection $account;
+
     public function __construct()
     {
         $this->esr_labors = new ArrayCollection();
         $this->signed_ESRs = new ArrayCollection();
+        $this->account = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +120,36 @@ class Employee
             // set the owning side to null (unless already changed)
             if ($signedESR->getSignedBy() === $this) {
                 $signedESR->setSignedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Account>
+     */
+    public function getAccounts(): Collection
+    {
+        return $this->account;
+    }
+
+    public function addAccount(Account $account): self
+    {
+        if (!$this->account->contains($account)) {
+            $this->account->add($account);
+            $account->setAssignedTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccount(Account $account): self
+    {
+        if ($this->account->removeElement($account)) {
+            // set the owning side to null (unless already changed)
+            if ($account->getAssignedTo() === $this) {
+                $account->setAssignedTo(null);
             }
         }
 
