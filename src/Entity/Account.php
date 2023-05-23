@@ -30,7 +30,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(inversedBy: 'accounts')]
+    #[ORM\ManyToOne(inversedBy: 'account')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Employee $assigned_to = null;
 

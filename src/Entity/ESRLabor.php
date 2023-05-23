@@ -13,7 +13,7 @@ class ESRLabor
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'esr_laborers')]
+    #[ORM\ManyToOne(inversedBy: 'esr_labors')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ESR $esr = null;
 
