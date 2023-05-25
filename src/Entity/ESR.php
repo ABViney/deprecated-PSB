@@ -8,14 +8,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ESRRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ESRRepository::class)]
 class ESR
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeInterface $created_at = null; 
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeInterface $last_modified = null;
 
     #[ORM\Column(length: 255)]
     private ?string $serial_no = null;
@@ -26,7 +32,7 @@ class ESR
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -57,6 +63,47 @@ class ESR
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtPersist(): self
+    {
+        $this->created_at = new \DateTimeImmutable('now', new \DateTimeZone('utc'));
+
+        return $this;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getLastModified(): ?\DateTimeInterface
+    {
+        return $this->last_modified;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateLastModified(): self
+    {
+        $this->last_modified = new \DateTimeImmutable('now', new \DateTimeZone('utc'));
+
+        return $this;
+    }
+
+    public function setLastModified(\DateTimeInterface $last_modified): self
+    {
+        $this->last_modified = $last_modified;
+
+        return $this;
     }
 
     public function getSerialNo(): ?string
@@ -98,22 +145,6 @@ class ESR
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
-    }
-
-        
-    /**
-     * When an ESR form is submitted the date can be
-     * left blank if the current time should be used.
-     * 
-     * @see App\Form\ESRForm
-     * 
-     * @return self
-     */
-    #[ORM\PrePersist]
-    public function ensureDateSet(): self
-    {
-        $this->date = $this->date ?? new \DateTime();
-        return $this;
     }
 
     public function setDate(\DateTimeInterface $date): self
