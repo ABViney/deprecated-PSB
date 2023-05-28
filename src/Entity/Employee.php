@@ -6,6 +6,7 @@ use App\Repository\EmployeeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 class Employee
@@ -15,9 +16,11 @@ class Employee
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Regex('/^[[:alpha:]]+$/')]
     #[ORM\Column(length: 255)]
     private ?string $first_name = null;
 
+    #[Assert\Regex('/^[[:alpha:]]+$/')]
     #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
@@ -69,6 +72,11 @@ class Employee
         $this->last_name = $last_name;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->first_name.' '.$this->last_name;
     }
 
     /**
