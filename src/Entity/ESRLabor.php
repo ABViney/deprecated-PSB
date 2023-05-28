@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ESRLaborRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ESRLaborRepository::class)]
 class ESRLabor
@@ -13,11 +14,12 @@ class ESRLabor
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'esr_labors')]
+    #[ORM\ManyToOne(inversedBy: 'esr_labors', targetEntity: ESR::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?ESR $esr = null;
 
-    #[ORM\ManyToOne(inversedBy: 'esr_labors')]
+    #[Assert\NotBlank]
+    #[ORM\ManyToOne(inversedBy: 'esr_labors', targetEntity: Employee::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Employee $employee = null;
 
@@ -27,6 +29,12 @@ class ESRLabor
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString()
+    {
+        /** @see App\Entity\ESRPartUsed::__toString */
+        return '';
     }
 
     public function getEsr(): ?ESR
