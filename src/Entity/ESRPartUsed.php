@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ESRPartUsedRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ESRPartUsedRepository::class)]
 class ESRPartUsed
@@ -17,16 +18,26 @@ class ESRPartUsed
     #[ORM\JoinColumn(nullable: false)]
     private ?ESR $esr = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?ESRPart $esr_part = null;
 
+    #[Assert\GreaterThan(0)]
     #[ORM\Column]
     private ?int $quantity = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString()
+    {
+        // NOTE Either EasyAdmin's CollectionField or Symfony's CollectionType
+        // is trying to parse associated entities to string. By default, this evaluates to
+        // this class's fqcn with an appended #%id%. Outside the embedded form, the user
+        // cannot modify ESRPartUsed, so this information should be vacant.
+        return '';
     }
 
     public function getEsr(): ?ESR
