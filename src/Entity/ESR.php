@@ -7,7 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\Cascade] 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ESRRepository::class)]
 class ESR
@@ -44,10 +46,10 @@ class ESR
     #[ORM\Column(type: Types::TEXT)]
     private ?string $action_taken = null;
 
-    #[ORM\OneToMany(mappedBy: 'esr', targetEntity: ESRPartUsed::class)]
+    #[ORM\OneToMany(mappedBy: 'esr', targetEntity: ESRPartUsed::class, cascade: ['persist', 'remove'])]
     private Collection $esr_parts_used;
 
-    #[ORM\OneToMany(mappedBy: 'esr', targetEntity: ESRLabor::class)]
+    #[ORM\OneToMany(mappedBy: 'esr', targetEntity: ESRLabor::class, cascade: ['persist', 'remove'])]
     private Collection $esr_labors;
 
     #[ORM\ManyToOne(inversedBy: 'signed_ESRs')]
@@ -228,22 +230,32 @@ class ESR
         return $this->esr_labors;
     }
 
-    public function addEsrLaborer(ESRLabor $esrLaborer): self
+    public function setEsrLabors(Collection $esrLabors): self
     {
-        if (!$this->esr_labors->contains($esrLaborer)) {
-            $this->esr_labors->add($esrLaborer);
-            $esrLaborer->setEsr($this);
+        /** @var ESRLabor */
+        foreach ($esrLabors as $esr_labor) {
+            $this->addEsrLabor($esr_labor);
         }
 
         return $this;
     }
 
-    public function removeEsrLaborer(ESRLabor $esrLaborer): self
+    public function addEsrLabor(ESRLabor $esrLabor): self
     {
-        if ($this->esr_labors->removeElement($esrLaborer)) {
+        if (!$this->esr_labors->contains($esrLabor)) {
+            $this->esr_labors->add($esrLabor);
+            $esrLabor->setEsr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEsrLabor(ESRLabor $esrLabor): self
+    {
+        if ($this->esr_labors->removeElement($esrLabor)) {
             // set the owning side to null (unless already changed)
-            if ($esrLaborer->getEsr() === $this) {
-                $esrLaborer->setEsr(null);
+            if ($esrLabor->getEsr() === $this) {
+                $esrLabor->setEsr(null);
             }
         }
 
