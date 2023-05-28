@@ -6,6 +6,7 @@ use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account implements UserInterface, PasswordAuthenticatedUserInterface
@@ -15,12 +16,18 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Length(
+        min: 1,
+        minMessage: 'Username cannot be blank.'
+    )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
+    // TODO autogenerate
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
+    // TODO autopopulate
     #[ORM\Column]
     private array $roles = [];
 
