@@ -100,10 +100,10 @@ class ESRCrudController extends AbstractCrudController
         //////
         // ID
         //////
-        $id = IdField::new('id')
-            ->hideOnForm()
-        ;
-        yield $id;
+        // $id = IdField::new('id')
+        //     ->hideOnForm()
+        // ;
+        // yield $id;
 
         ////////////
         // Metadata
