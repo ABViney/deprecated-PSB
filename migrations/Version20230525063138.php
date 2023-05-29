@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230521002925 extends AbstractMigration
+final class Version20230525063138 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -32,9 +32,11 @@ final class Version20230521002925 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7D3656A4E7927C74 ON account (email)');
         $this->addSql('CREATE INDEX IDX_7D3656A4F4BD7827 ON account (assigned_to_id)');
         $this->addSql('CREATE TABLE employee (id INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE esr (id INT NOT NULL, esr_result_id INT DEFAULT NULL, signed_by_id INT NOT NULL, serial_no VARCHAR(255) NOT NULL, model VARCHAR(255) NOT NULL, description TEXT NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, problems TEXT NOT NULL, action_taken TEXT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE esr (id INT NOT NULL, esr_result_id INT DEFAULT NULL, signed_by_id INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, last_modified TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, serial_no VARCHAR(255) NOT NULL, model VARCHAR(255) NOT NULL, description TEXT NOT NULL, date DATE NOT NULL, problems TEXT NOT NULL, action_taken TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B44EAFC4083E8D1 ON esr (esr_result_id)');
         $this->addSql('CREATE INDEX IDX_B44EAFCD2EDD3FB ON esr (signed_by_id)');
+        $this->addSql('COMMENT ON COLUMN esr.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN esr.last_modified IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE esrlabor (id INT NOT NULL, esr_id INT NOT NULL, employee_id INT NOT NULL, labor_hours DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_AE2665D6FBFD160 ON esrlabor (esr_id)');
         $this->addSql('CREATE INDEX IDX_AE2665D68C03F15C ON esrlabor (employee_id)');
